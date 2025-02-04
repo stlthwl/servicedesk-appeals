@@ -52,10 +52,24 @@
                 console.log('это app!', app)
             }
 
-            const data = urlParams.get('data')
+            const data = urlParams.get('data');
             if (data) {
-                this.data = data
-                console.log('это данные!', data)
+                try {
+                    // 1. Декодируем URL-encoded строку
+                    const decodedData = decodeURIComponent(data);
+
+                    // 2. Парсим JSON
+                    const jsonData = JSON.parse(decodedData);
+
+                    this.data = jsonData; // Сохраняем распарсенный JSON-объект
+                    console.log('Это данные (JSON):', jsonData);
+
+                } catch (error) {
+                    console.error('Ошибка при декодировании и парсинге JSON:', error);
+                    this.data = null; // Или другое значение по умолчанию, если произошла ошибка
+                }
+            } else {
+                this.data = null; // Или другое значение по умолчанию, если параметра 'data' нет
             }
         },
         methods: {
