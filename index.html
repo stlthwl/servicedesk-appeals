@@ -43,23 +43,20 @@
             const telegramId = urlParams.get('telegram_id')
             if (telegramId) {
                 this.telegramId = telegramId
+                console.log('это телеграм id', telegramId)
             }
-
-            window.tg_id = this.telegramId
 
             const app = urlParams.get('app')
             if (app) {
                 this.app = app
+                console.log('это app!', telegramId)
             }
-
-            window.tg_app = this.app
 
             const data = urlParams.get('data')
             if (app) {
                 this.data = data
+                console.log('это данные!', telegramId)
             }
-
-            window.tg_data = this.data
         },
         methods: {
 
