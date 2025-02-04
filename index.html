@@ -40,36 +40,20 @@
         mounted() {
             const urlParams = new URLSearchParams(window.location.search)
 
-            const telegramId = urlParams.get('telegram_id')
-            if (telegramId) {
-                this.telegramId = telegramId
-                console.log('это телеграм id', telegramId)
-            }
+            this.telegramId = urlParams.get('telegram_id') || '';
+            this.app = urlParams.get('app') || '';
 
-            const app = urlParams.get('app')
-            if (app) {
-                this.app = app
-                console.log('это app!', app)
-            }
-
-            const data = urlParams.get('data');
-            if (data) {
-                try {
-                    // 1. Декодируем URL-encoded строку
-                    const decodedData = decodeURIComponent(data);
-
-                    // 2. Парсим JSON
-                    const jsonData = JSON.parse(decodedData);
-
-                    this.data = jsonData; // Сохраняем распарсенный JSON-объект
-                    console.log('Это данные (JSON):', jsonData);
-
-                } catch (error) {
-                    console.error('Ошибка при декодировании и парсинге JSON:', error);
-                    this.data = null; // Или другое значение по умолчанию, если произошла ошибка
-                }
-            } else {
-                this.data = null; // Или другое значение по умолчанию, если параметра 'data' нет
+            try {
+                this.data = {
+                    organization: JSON.parse(urlParams.get('organization') || '[]'),
+                    projects: JSON.parse(urlParams.get('projects') || '[]'),
+                    categories: JSON.parse(urlParams.get('categories') || '[]'),
+                    priorities: JSON.parse(urlParams.get('priorities') || '[]')
+                };
+                console.log('Это данные (JSON):', this.data);
+            } catch (error) {
+                console.error('Ошибка при парсинге JSON:', error);
+                this.data = {}; // Или другое значение по умолчанию, если произошла ошибка
             }
         },
         methods: {
