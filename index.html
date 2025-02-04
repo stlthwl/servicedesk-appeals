@@ -49,13 +49,13 @@
             const app = urlParams.get('app')
             if (app) {
                 this.app = app
-                console.log('это app!', telegramId)
+                console.log('это app!', app)
             }
 
             const data = urlParams.get('data')
-            if (app) {
+            if (data) {
                 this.data = data
-                console.log('это данные!', telegramId)
+                console.log('это данные!', data)
             }
         },
         methods: {
