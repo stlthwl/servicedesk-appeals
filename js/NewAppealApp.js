@@ -2,8 +2,22 @@ const { createApp } = Vue;
 
 const NewAppealApp = {
     template: `
+<!-- As a heading -->
+        <nav class="navbar navbar-light bg-light">
+          <div class="container-fluid">
+            <span class="navbar-brand mb-0 h1">Новое обращение</span>
+          </div>
+        </nav>
+
         <div>
             <h1 v-if="error">{{ message }}</h1>
+        </div>
+        
+        <div class="mb-3">
+          <label for="organization" class="form-label">Disabled select menu</label>
+          <select id="organization" class="form-select" disabled>
+            <option>{{ organization['name'] }}</option>
+          </select>
         </div>
         
         <div class="mb-3">
@@ -19,7 +33,8 @@ const NewAppealApp = {
         return {
             telegramId: '',
             app: '',
-            data: null,
+            data: {},
+            organozation: {},
             message: '',
             error: false,
         }
@@ -31,23 +46,32 @@ const NewAppealApp = {
             this.telegramId = urlParams.get('telegram_id') || '';
             this.app = urlParams.get('app') || '';
 
-            console.log('telegramId', this.telegramId)
             console.log('app', this.app)
 
-            const tgData = {
-                organization: JSON.parse(urlParams.get('organization') || '[]'),
-                projects: JSON.parse(urlParams.get('projects') || '[]'),
-                categories: JSON.parse(urlParams.get('categories') || '[]'),
-                priorities: JSON.parse(urlParams.get('priorities') || '[]')
-            };
+            if (this.app === 'create_appeal') {
+                console.log('telegramId', this.telegramId)
 
-            if (Object.values(tgData).every(arr => Array.isArray(arr))) {
-                console.log('Это данные (JSON):', tgData);
-                this.data = tgData;
-                console.log('Это данные организации', tgData.organization)
-                window.tgData = tgData
-            } else {
-                throw new Error('Некорректные данные');
+                const tgData = {
+                    organization: JSON.parse(urlParams.get('organization') || '[]'),
+                    projects: JSON.parse(urlParams.get('projects') || '[]'),
+                    categories: JSON.parse(urlParams.get('categories') || '[]'),
+                    priorities: JSON.parse(urlParams.get('priorities') || '[]')
+                };
+
+                this.data = tgData
+
+                console.log('tgData', this.data)
+
+                this.organization = tgData.organization[0]
+
+                console.log('organization', this.organization)
+
+                if (Object.values(tgData).every(arr => Array.isArray(arr))) {
+                    console.log('Это данные (JSON):', tgData);
+                    console.log('Это данные организации', tgData.organization)
+                } else {
+                    throw new Error('Некорректные данные');
+                }
             }
         } catch (error) {
             console.error('Ошибка при парсинге JSON:', error);
