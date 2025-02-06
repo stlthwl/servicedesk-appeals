@@ -147,7 +147,7 @@ const NewAppealApp = {
             this.app = urlParams.get('app') || '';
 
             // Проверка app
-            if (this.app !== 'create_appea') {
+            if (this.app !== 'create_appeal') {
                 const appElement = document.getElementById('create_appeal');
                 if (appElement) {
                     appElement.style.display = 'none';
