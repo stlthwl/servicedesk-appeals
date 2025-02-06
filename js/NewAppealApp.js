@@ -34,7 +34,7 @@ const NewAppealApp = {
             telegramId: '',
             app: '',
             data: {},
-            organozation: {},
+            organization: {},
             message: '',
             error: false,
         }
