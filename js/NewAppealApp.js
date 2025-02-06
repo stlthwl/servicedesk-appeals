@@ -69,7 +69,7 @@ const NewAppealApp = {
                 };
 
                 this.organization = tgData.organization[0]
-                this.projects = this.data().projects
+                this.projects = tgData.projects
 
                 if (Object.values(tgData).every(arr => Array.isArray(arr))) {
                     console.log('Это данные (JSON):', tgData);
