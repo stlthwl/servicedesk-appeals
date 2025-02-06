@@ -28,10 +28,9 @@ const NewAppealApp = {
         <div class="mb-3">
           <label for="appealProject" class="form-label">проект</label>
           <select id="appealProject" class="form-select">
-            <option v-for="(key, value) in data.projects"
-            :key="key"
+            <option v-for="(key, value) in projects"
             
-            >{{ data.projects[key] }}</option>
+            >{{ value }}</option>
           </select>
         </div>
         
@@ -44,8 +43,8 @@ const NewAppealApp = {
         return {
             telegramId: '',
             app: '',
-            data: {},
             organization: {},
+            projects: {},
             message: '',
             error: false,
         }
@@ -69,13 +68,8 @@ const NewAppealApp = {
                     priorities: JSON.parse(urlParams.get('priorities') || '[]')
                 };
 
-                this.data = tgData
-
-                console.log('tgData', this.data)
-
                 this.organization = tgData.organization[0]
-
-                console.log('organization', this.organization)
+                this.projects = this.data().projects
 
                 if (Object.values(tgData).every(arr => Array.isArray(arr))) {
                     console.log('Это данные (JSON):', tgData);
