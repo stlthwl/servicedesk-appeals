@@ -57,6 +57,7 @@ const NewAppealApp = {
                         id="userOrganization" 
                         class="form-select" 
                         v-model="formData.organization_id"
+                        disabled
                         required
                     >
                         <option
@@ -130,6 +131,7 @@ const NewAppealApp = {
             error: false,
             submitted: false,
             formData: {
+                action: 'create_new_appeal',
                 topic: '',
                 project_id: null,
                 organization_id: null,
@@ -163,8 +165,6 @@ const NewAppealApp = {
                 categories: JSON.parse(urlParams.get('categories') || '[]'),
                 priorities: JSON.parse(urlParams.get('priorities') || '[]')
             };
-
-            console.log(tgData.organization)
 
             this.organizations = tgData.organizations
             this.projects = tgData.projects
@@ -208,11 +208,13 @@ const NewAppealApp = {
 
             console.log(jsonStrData)
 
-            // Передача данных в Telegram Web App
-            window.Telegram.WebApp.sendData(jsonStrData);
-
             this.submitted = true;
             this.message = 'Выполнено успешно!';
+
+            setTimeout(() => {
+                // Передача данных в Telegram Web App с задержкой 1.5 сек
+                window.Telegram.WebApp.sendData(jsonStrData);
+            }, 1500)
         }
     }
 };
