@@ -28,9 +28,9 @@ const NewAppealApp = {
         <div class="mb-3">
           <label for="appealProject" class="form-label">проект</label>
           <select id="appealProject" class="form-select">
-            <option v-for="(key, value) in projects"
+            <option v-for="project in projects"
             
-            >{{ value }}</option>
+            >{{ project.name }}</option>
           </select>
         </div>
         
