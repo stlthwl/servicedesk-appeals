@@ -14,16 +14,27 @@ const NewAppealApp = {
         </div>
         
         <div class="mb-3">
-          <label for="organization" class="form-label">Disabled select menu</label>
+          <label for="appealTopic" class="form-label">Заголовок</label>
+          <input type="text" class="form-control" id="appealTopic" placeholder="Тема">
+        </div>
+        
+        <div class="mb-3">
+          <label for="organization" class="form-label">Организация</label>
           <select id="organization" class="form-select" disabled>
             <option>{{ organization['name'] }}</option>
           </select>
         </div>
         
         <div class="mb-3">
-          <label for="appealTopic" class="form-label">Тема</label>
-          <input type="text" class="form-control" id="appealTopic" placeholder="Тема">
+          <label for="appealProject" class="form-label">проект</label>
+          <select id="appealProject" class="form-select">
+            <option v-for="(key, value) in data.projects"
+            :key="key"
+            
+            >{{ data.projects[key] }}</option>
+          </select>
         </div>
+        
         <div class="mb-3">
           <label for="appealDescription" class="form-label">Содержание</label>
           <textarea class="form-control" id="appealDescription" rows="3"></textarea>
