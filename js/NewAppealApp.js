@@ -1,61 +1,90 @@
-const { createApp } = Vue;
+const {createApp} = Vue;
 
 const NewAppealApp = {
     template: `
-<!-- As a heading -->
+        <!-- Start: Nav bar -->
         <nav class="navbar navbar-light bg-light">
-          <div class="container-fluid">
-            <span class="navbar-brand mb-0 h1">Новое обращение</span>
-          </div>
+              <div class="container-fluid">
+                    <span class="navbar-brand mb-0 h1">Новое обращение</span>
+              </div>
         </nav>
+        <!-- End: Nav bar -->
 
-        <div>
-            <h1 v-if="error">{{ message }}</h1>
+        <!-- Start: Message group -->
+        <div v-if="error" class="alert alert-danger" role="alert">
+            {{ message }}
         </div>
+        <div v-if="!error && submitted" class="alert alert-success" role="alert">
+            {{ message }}
+        </div>
+        <!-- End: Message group -->
         
-        <div class="mb-3">
-          <label for="appealTopic" class="form-label">Заголовок</label>
-          <input type="text" class="form-control" id="appealTopic" placeholder="Тема">
-        </div>
-        
-        <div class="mb-3">
-          <label for="appealProject" class="form-label">Продукт</label>
-          <select id="appealProject" class="form-select">
-            <option v-for="project in projects"
-            :key="project.id"
-            >{{ project.name }}</option>
-          </select>
-        </div>
-        
-        <div class="mb-3">
-          <label for="organization" class="form-label">Организация</label>
-          <select id="organization" class="form-select" disabled>
-            <option>{{ organization['name'] }}</option>
-          </select>
-        </div>
-        
-        <div class="mb-3">
-          <label for="appealCategory" class="form-label">Категории</label>
-          <select id="appealCategory" class="form-select">
-            <option v-for="category in categories"
-            :key="category.id"
-            >{{ category.name }}</option>
-          </select>
-        </div>
-        
-        <div class="mb-3">
-          <label for="appealPriority" class="form-label">Категории</label>
-          <select id="appealPriority" class="form-select">
-            <option v-for="priority in priorities"
-            :key="priority.id"
-            >{{ priority.name }}</option>
-          </select>
-        </div>
-        
-        <div class="mb-3">
-          <label for="appealDescription" class="form-label">Описание обращения</label>
-          <textarea class="form-control" id="appealDescription" rows="3"></textarea>
-        </div>
+        <!-- Start: Form Group -->
+        <form @submit.prevent="submitForm">
+            <div class="mb-3">
+                <label for="appealTopic" class="form-label">Заголовок</label>
+                <input 
+                    type="text" 
+                    class="form-control" 
+                    id="appealTopic"
+                    v-model="formData.topic" 
+                    placeholder="Заголовок"
+                    required="true"
+                >
+            </div>
+            
+            <div class="mb-3">
+                <label for="appealProject" class="form-label">Продукт</label>
+                <select 
+                    id="appealProject" 
+                    class="form-select"
+                    v-model="formData.project_id"
+                >
+                    <option 
+                        v-for="project in projects"
+                        :key="project.id"
+                        :value="project.id"
+                    >{{ project.name }}</option>
+                </select>
+            </div>
+            
+            <div class="mb-3">
+                <label for="organization" class="form-label">Организация</label>
+                <select 
+                    id="organization" 
+                    class="form-select" 
+                    v-model="formData.organization_id"
+                disabled>
+                    <option :value="organization.id">{{ organization['name'] }}</option>
+                </select>
+            </div>
+            
+            <div class="mb-3">
+                <label for="appealCategory" class="form-label">Категории</label>
+                <select id="appealCategory" class="form-select">
+                    <option v-for="category in categories"
+                    :key="category.id"
+                    >{{ category.name }}</option>
+                </select>
+            </div>
+            
+            <div class="mb-3">
+                <label for="appealPriority" class="form-label">Приоритет</label>
+                <select id="appealPriority" class="form-select">
+                    <option v-for="priority in priorities"
+                    :key="priority.id"
+                    >{{ priority.name }}</option>
+                </select>
+            </div>
+            
+            <div class="mb-3">
+                <label for="appealDescription" class="form-label">Описание обращения</label>
+                <textarea class="form-control" id="appealDescription" rows="3"></textarea>
+            </div>
+            
+            <button type="submit" class="btn btn-lg btn-primary">Сохранить</button>
+        </form>
+        <!-- End: Form Group -->
     `,
     data() {
         return {
@@ -67,6 +96,15 @@ const NewAppealApp = {
             priorities: {},
             message: '',
             error: false,
+            submitted: false,
+            formData: {
+                topic: '',
+                project_id: null,
+                organization_id: null,
+                category_id: null,
+                priority_id: null,
+                description: ''
+            },
         }
     },
     mounted() {
@@ -107,7 +145,15 @@ const NewAppealApp = {
         }
     },
     methods: {
+        async submitForm() {
+            this.message = 'Выполнено успешно!'
+            this.submitted = true
 
+            // const submitData = JSON.stringify({
+            //     topic: this.topic,
+            // })
+            console.log(this.formData)
+        }
     }
 };
 
