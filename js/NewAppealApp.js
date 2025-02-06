@@ -2,120 +2,121 @@ const {createApp} = Vue;
 
 const NewAppealApp = {
     template: `
-        <!-- Start: Nav bar -->
-        <nav class="navbar navbar-light bg-light">
-              <div class="container-fluid">
-                    <span class="navbar-brand mb-0 h1">Новое обращение</span>
-              </div>
-        </nav>
-        <!-- End: Nav bar -->
-
-        <!-- Start: Message group -->
-        <div v-if="error" class="alert alert-danger" role="alert">
-            {{ message }}
-        </div>
-        <div v-if="!error && submitted" class="alert alert-success" role="alert">
-            {{ message }}
-        </div>
-        <!-- End: Message group -->
-        
-        <!-- Start: Form Group -->
-        <form @submit.prevent="submitForm">
-            <div class="mb-3">
-                <label for="appealTopic" class="form-label">Заголовок</label>
-                <input 
-                    type="text" 
-                    class="form-control" 
-                    id="appealTopic"
-                    v-model="formData.topic" 
-                    placeholder="Заголовок"
-                    required
-                >
+        <div id="create_appeal">
+            <!-- Start: Nav bar -->
+            <nav class="navbar navbar-light bg-light">
+                  <div class="container-fluid">
+                        <span class="navbar-brand mb-0 h1">Новое обращение</span>
+                  </div>
+            </nav>
+            <!-- End: Nav bar -->
+    
+            <!-- Start: Message group -->
+            <div v-if="error" class="alert alert-danger" role="alert">
+                {{ message }}
             </div>
-            
-            <div class="mb-3">
-                <label for="appealProject" class="form-label">Продукт</label>
-                <select 
-                    id="appealProject" 
-                    class="form-select"
-                    v-model="formData.project_id"
-                    required
-                >
-                    <option 
-                        v-for="project in projects"
-                        :key="project.id"
-                        :value="project.id"
-                    >{{ project.name }}
-                    </option>
-                </select>
+            <div v-if="!error && submitted" class="alert alert-success" role="alert">
+                {{ message }}
             </div>
+            <!-- End: Message group -->
             
-            <div class="mb-3">
-                <label for="userOrganization" class="form-label">Организация</label>
-                <select 
-                    id="userOrganization" 
-                    class="form-select" 
-                    v-model="formData.organization_id"
-                    disabled
-                    required
-                >
-                    <option
-                        v-for="organization in organizations"
-                        :key="organization.id" 
-                        :value="organization.id"
-                    >{{ organization.name }}
-                    </option>
-                </select>
-            </div>
-            
-            <div class="mb-3">
-                <label for="appealCategory" class="form-label">Категории</label>
-                <select 
-                    id="appealCategory" 
-                    class="form-select"
-                    v-model="formData.category_id"
-                    required
-                >
-                    <option 
-                        v-for="category in categories"
-                        :key="category.id"
-                        :value="category.id"
-                    >{{ category.name }}
-                    </option>
-                </select>
-            </div>
-            
-            <div class="mb-3">
-                <label for="appealPriority" class="form-label">Приоритет</label>
-                <select 
-                    id="appealPriority" 
-                    class="form-select"
-                    v-model="formData.priority_id"
-                    required
-                >
-                    <option 
-                        v-for="priority in priorities"
-                        :key="priority.id"
-                        :value="priority.id"
-                    >{{ priority.name }}
-                    </option>
-                </select>
-            </div>
-            
-            <div class="mb-3">
-                <label for="appealDescription" class="form-label">Описание обращения</label>
-                <textarea 
-                    class="form-control" 
-                    id="appealDescription" 
-                    rows="3" 
-                    v-model="formData.description"
-                    required
-                ></textarea>
-            </div>
-            
-            <button type="submit" class="btn btn-lg btn-primary">Сохранить</button>
-        </form>
-        <!-- End: Form Group -->
+            <!-- Start: Form Group -->
+            <form @submit.prevent="submitForm">
+                <div class="mb-3">
+                    <label for="appealTopic" class="form-label">Заголовок</label>
+                    <input 
+                        type="text" 
+                        class="form-control" 
+                        id="appealTopic"
+                        v-model="formData.topic" 
+                        placeholder="Заголовок"
+                        required
+                    >
+                </div>
+                
+                <div class="mb-3">
+                    <label for="appealProject" class="form-label">Продукт</label>
+                    <select 
+                        id="appealProject" 
+                        class="form-select"
+                        v-model="formData.project_id"
+                        required
+                    >
+                        <option 
+                            v-for="project in projects"
+                            :key="project.id"
+                            :value="project.id"
+                        >{{ project.name }}
+                        </option>
+                    </select>
+                </div>
+                
+                <div class="mb-3">
+                    <label for="userOrganization" class="form-label">Организация</label>
+                    <select 
+                        id="userOrganization" 
+                        class="form-select" 
+                        v-model="formData.organization_id"
+                        required
+                    >
+                        <option
+                            v-for="organization in organizations"
+                            :key="organization.id" 
+                            :value="organization.id"
+                        >{{ organization.name }}
+                        </option>
+                    </select>
+                </div>
+                
+                <div class="mb-3">
+                    <label for="appealCategory" class="form-label">Категории</label>
+                    <select 
+                        id="appealCategory" 
+                        class="form-select"
+                        v-model="formData.category_id"
+                        required
+                    >
+                        <option 
+                            v-for="category in categories"
+                            :key="category.id"
+                            :value="category.id"
+                        >{{ category.name }}
+                        </option>
+                    </select>
+                </div>
+                
+                <div class="mb-3">
+                    <label for="appealPriority" class="form-label">Приоритет</label>
+                    <select 
+                        id="appealPriority" 
+                        class="form-select"
+                        v-model="formData.priority_id"
+                        required
+                    >
+                        <option 
+                            v-for="priority in priorities"
+                            :key="priority.id"
+                            :value="priority.id"
+                        >{{ priority.name }}
+                        </option>
+                    </select>
+                </div>
+                
+                <div class="mb-3">
+                    <label for="appealDescription" class="form-label">Описание обращения</label>
+                    <textarea 
+                        class="form-control" 
+                        id="appealDescription" 
+                        rows="3" 
+                        v-model="formData.description"
+                        required
+                    ></textarea>
+                </div>
+                
+                <button type="submit" class="btn btn-lg btn-primary">Сохранить</button>
+            </form>
+            <!-- End: Form Group -->
+        </div>    
     `,
     data() {
         return {
@@ -147,9 +148,12 @@ const NewAppealApp = {
 
             // Проверка app
             if (this.app !== 'create_appea') {
-                this.error = true;
-                this.message = 'Неправильное приложение. Компонент не будет загружен.';
-                return; // Прекращаем выполнение метода и не рендерим компонент
+                const appElement = document.getElementById('create_appeal');
+                if (appElement) {
+                    appElement.style.display = 'none';
+                }
+                console.error(`Не найдено приложение ${this.app}`)
+                return
             }
 
             // получение данных из Telegram
@@ -196,7 +200,6 @@ const NewAppealApp = {
                 this.error = true
                 return
             }
-
 
             // Преобразование данных формы в строку Json для передачи данных в Бот Telegram
             const jsonStrData = JSON.stringify(this.formData)
