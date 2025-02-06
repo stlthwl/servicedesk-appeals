@@ -145,24 +145,35 @@ const NewAppealApp = {
             this.telegramId = urlParams.get('telegram_id') || '';
             this.app = urlParams.get('app') || '';
 
-            if (this.app === 'create_appeal') {
-                // получение данных из Telegram
-                const tgData = {
-                    organization: JSON.parse(urlParams.get('organizations') || '[]'),
-                    projects: JSON.parse(urlParams.get('projects') || '[]'),
-                    categories: JSON.parse(urlParams.get('categories') || '[]'),
-                    priorities: JSON.parse(urlParams.get('priorities') || '[]')
-                };
-
-                this.organization = tgData.organization
-                this.projects = tgData.projects
-                this.categories = tgData.categories
-                this.priorities = tgData.priorities
-
-                if (!Object.values(tgData).every(arr => Array.isArray(arr))) {
-                    throw new Error('Не удалось получить данные из Telegram');
-                }
+            // Проверка app
+            if (this.app !== 'create_appea') {
+                this.error = true;
+                this.message = 'Неправильное приложение. Компонент не будет загружен.';
+                return; // Прекращаем выполнение метода и не рендерим компонент
             }
+
+            // получение данных из Telegram
+            const tgData = {
+                organization: JSON.parse(urlParams.get('organizations') || '[]'),
+                projects: JSON.parse(urlParams.get('projects') || '[]'),
+                categories: JSON.parse(urlParams.get('categories') || '[]'),
+                priorities: JSON.parse(urlParams.get('priorities') || '[]')
+            };
+
+            this.organization = tgData.organization
+            this.projects = tgData.projects
+            this.categories = tgData.categories
+            this.priorities = tgData.priorities
+
+            // Установка первой организации в выпадающем списке, если она есть
+            if (this.organizations.length > 0) {
+                this.formData.organization_id = this.organizations[0].id;
+            }
+
+            if (!Object.values(tgData).every(arr => Array.isArray(arr))) {
+                throw new Error('Не удалось получить данные из Telegram');
+            }
+
         } catch (e) {
             console.error('Ошибка при парсинге JSON:', e);
             this.message = 'Ошибка загрузки данных';
@@ -186,7 +197,6 @@ const NewAppealApp = {
                 return
             }
 
-            console.log(this.formData)
 
             // Преобразование данных формы в строку Json для передачи данных в Бот Telegram
             const jsonStrData = JSON.stringify(this.formData)
@@ -194,7 +204,7 @@ const NewAppealApp = {
             console.log(jsonStrData)
 
             // Передача данных в Telegram Web App
-            window.Telegram.WebApp.sendData(data);
+            window.Telegram.WebApp.sendData(jsonStrData);
 
             this.submitted = true;
             this.message = 'Выполнено успешно!';
