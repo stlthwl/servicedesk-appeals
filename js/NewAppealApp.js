@@ -29,7 +29,7 @@ const NewAppealApp = {
                     id="appealTopic"
                     v-model="formData.topic" 
                     placeholder="Заголовок"
-                    required="true"
+                    required
                 >
             </div>
             
@@ -39,47 +39,77 @@ const NewAppealApp = {
                     id="appealProject" 
                     class="form-select"
                     v-model="formData.project_id"
+                    required
                 >
                     <option 
                         v-for="project in projects"
                         :key="project.id"
                         :value="project.id"
-                    >{{ project.name }}</option>
+                    >{{ project.name }}
+                    </option>
                 </select>
             </div>
             
             <div class="mb-3">
-                <label for="organization" class="form-label">Организация</label>
+                <label for="userOrganization" class="form-label">Организация</label>
                 <select 
-                    id="organization" 
+                    id="userOrganization" 
                     class="form-select" 
                     v-model="formData.organization_id"
-                disabled>
-                    <option :value="organization.id">{{ organization['name'] }}</option>
+                    required
+                >
+                    <option
+                        v-for="organization in organizations"
+                        :key="organization.id" 
+                        :value="organization.id"
+                    >{{ organization.name }}
+                    </option>
                 </select>
             </div>
             
             <div class="mb-3">
                 <label for="appealCategory" class="form-label">Категории</label>
-                <select id="appealCategory" class="form-select">
-                    <option v-for="category in categories"
-                    :key="category.id"
-                    >{{ category.name }}</option>
+                <select 
+                    id="appealCategory" 
+                    class="form-select"
+                    v-model="formData.category_id"
+                    required
+                >
+                    <option 
+                        v-for="category in categories"
+                        :key="category.id"
+                        :value="category.id"
+                    >{{ category.name }}
+                    </option>
                 </select>
             </div>
             
             <div class="mb-3">
                 <label for="appealPriority" class="form-label">Приоритет</label>
-                <select id="appealPriority" class="form-select">
-                    <option v-for="priority in priorities"
-                    :key="priority.id"
-                    >{{ priority.name }}</option>
+                <select 
+                    id="appealPriority" 
+                    class="form-select"
+                    v-model="formData.priority_id"
+                    required
+                >
+                    <option 
+                        v-for="priority in priorities"
+                        :key="priority.id"
+                        :value="priority.id"
+                    >{{ priority.name }}
+                    </option>
                 </select>
             </div>
             
             <div class="mb-3">
                 <label for="appealDescription" class="form-label">Описание обращения</label>
-                <textarea class="form-control" id="appealDescription" rows="3"></textarea>
+                <textarea 
+                    class="form-control" 
+                    id="appealDescription" 
+                    rows="3" 
+                    v-model="formData.description"
+                    required
+                ></textarea>
             </div>
             
             <button type="submit" class="btn btn-lg btn-primary">Сохранить</button>
@@ -88,7 +118,7 @@ const NewAppealApp = {
     `,
     data() {
         return {
-            telegramId: '',
+            telegramId: null,
             app: '',
             organization: {},
             projects: {},
@@ -114,11 +144,8 @@ const NewAppealApp = {
             this.telegramId = urlParams.get('telegram_id') || '';
             this.app = urlParams.get('app') || '';
 
-            console.log('app', this.app)
-
             if (this.app === 'create_appeal') {
-                console.log('telegramId', this.telegramId)
-
+                // получение данных из Telegram
                 const tgData = {
                     organization: JSON.parse(urlParams.get('organization') || '[]'),
                     projects: JSON.parse(urlParams.get('projects') || '[]'),
@@ -126,33 +153,50 @@ const NewAppealApp = {
                     priorities: JSON.parse(urlParams.get('priorities') || '[]')
                 };
 
-                this.organization = tgData.organization[0]
+                this.organizations = tgData.organization
                 this.projects = tgData.projects
                 this.categories = tgData.categories
                 this.priorities = tgData.priorities
 
-                if (Object.values(tgData).every(arr => Array.isArray(arr))) {
-                    console.log('Это данные (JSON):', tgData);
-                    console.log('Это данные организации', tgData.organization)
-                } else {
-                    throw new Error('Некорректные данные');
+                if (!Object.values(tgData).every(arr => Array.isArray(arr))) {
+                    throw new Error('Не удалось получить данные из Telegram');
                 }
             }
-        } catch (error) {
-            console.error('Ошибка при парсинге JSON:', error);
+        } catch (e) {
+            console.error('Ошибка при парсинге JSON:', e);
             this.message = 'Ошибка загрузки данных';
             this.error = true;
         }
     },
     methods: {
         async submitForm() {
-            this.message = 'Выполнено успешно!'
-            this.submitted = true
+            // Проверка работы Telegram Web
+            if (window.Telegram && window.Telegram.WebApp) {
+                console.log('Telegram Web is available')
+            } else {
+                this.message = 'Telegram Web не доступен'
+                this.error = true
+                return
+            }
+            // Проверка telegram_id
+            if (this.telegramId === null) {
+                this.message = 'Не удалось определить telegram_id'
+                this.error = true
+                return
+            }
 
-            // const submitData = JSON.stringify({
-            //     topic: this.topic,
-            // })
             console.log(this.formData)
+
+            // Преобразование данных формы в строку Json для передачи данных в Бот Telegram
+            const jsonStrData = JSON.stringify(this.formData)
+
+            console.log(jsonStrData)
+
+            // // Отправка данных в Telegram Web App
+            // window.Telegram.WebApp.sendData(data);
+
+            this.submitted = true;
+            this.message = 'Выполнено успешно!';
         }
     }
 };
