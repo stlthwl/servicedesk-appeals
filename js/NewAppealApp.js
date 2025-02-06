@@ -26,11 +26,38 @@ const NewAppealApp = {
         </div>
         
         <div class="mb-3">
-          <label for="appealProject" class="form-label">проект</label>
+          <label for="appealProject" class="form-label">Проект</label>
           <select id="appealProject" class="form-select">
             <option v-for="project in projects"
-            
+            :key="project.id"
             >{{ project.name }}</option>
+          </select>
+        </div>
+        
+        <div class="mb-3">
+          <label for="appealProject" class="form-label">Проект</label>
+          <select id="appealProject" class="form-select">
+            <option v-for="project in projects"
+            :key="project.id"
+            >{{ project.name }}</option>
+          </select>
+        </div>
+        
+        <div class="mb-3">
+          <label for="categoriesProject" class="form-label">Категории</label>
+          <select id="categoriesProject" class="form-select">
+            <option v-for="category in categories"
+            :key="category.id"
+            >{{ category.name }}</option>
+          </select>
+        </div>
+        
+        <div class="mb-3">
+          <label for="priorityProject" class="form-label">Категории</label>
+          <select id="priorityProject" class="form-select">
+            <option v-for="priority in priorities"
+            :key="priority.id"
+            >{{ priority.name }}</option>
           </select>
         </div>
         
@@ -45,6 +72,8 @@ const NewAppealApp = {
             app: '',
             organization: {},
             projects: {},
+            categories: {},
+            priorities: {},
             message: '',
             error: false,
         }
@@ -70,6 +99,8 @@ const NewAppealApp = {
 
                 this.organization = tgData.organization[0]
                 this.projects = tgData.projects
+                this.categories = tgData.categories
+                this.priorities = tgData.priorities
 
                 if (Object.values(tgData).every(arr => Array.isArray(arr))) {
                     console.log('Это данные (JSON):', tgData);
