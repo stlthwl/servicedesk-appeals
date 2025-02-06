@@ -164,15 +164,12 @@ const NewAppealApp = {
                 priorities: JSON.parse(urlParams.get('priorities') || '[]')
             };
 
+            console.log(tgData.organization)
+
             this.organization = tgData.organization
             this.projects = tgData.projects
             this.categories = tgData.categories
             this.priorities = tgData.priorities
-
-            // Установка первой организации в выпадающем списке, если она есть
-            if (this.organizations.length > 0) {
-                this.formData.organization_id = this.organizations[0].id;
-            }
 
             if (!Object.values(tgData).every(arr => Array.isArray(arr))) {
                 throw new Error('Не удалось получить данные из Telegram');
