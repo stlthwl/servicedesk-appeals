@@ -19,6 +19,15 @@ const NewAppealApp = {
         </div>
         
         <div class="mb-3">
+          <label for="appealProject" class="form-label">Продукт</label>
+          <select id="appealProject" class="form-select">
+            <option v-for="project in projects"
+            :key="project.id"
+            >{{ project.name }}</option>
+          </select>
+        </div>
+        
+        <div class="mb-3">
           <label for="organization" class="form-label">Организация</label>
           <select id="organization" class="form-select" disabled>
             <option>{{ organization['name'] }}</option>
@@ -26,26 +35,8 @@ const NewAppealApp = {
         </div>
         
         <div class="mb-3">
-          <label for="appealProject" class="form-label">Проект</label>
-          <select id="appealProject" class="form-select">
-            <option v-for="project in projects"
-            :key="project.id"
-            >{{ project.name }}</option>
-          </select>
-        </div>
-        
-        <div class="mb-3">
-          <label for="appealProject" class="form-label">Проект</label>
-          <select id="appealProject" class="form-select">
-            <option v-for="project in projects"
-            :key="project.id"
-            >{{ project.name }}</option>
-          </select>
-        </div>
-        
-        <div class="mb-3">
-          <label for="categoriesProject" class="form-label">Категории</label>
-          <select id="categoriesProject" class="form-select">
+          <label for="appealCategory" class="form-label">Категории</label>
+          <select id="appealCategory" class="form-select">
             <option v-for="category in categories"
             :key="category.id"
             >{{ category.name }}</option>
@@ -53,8 +44,8 @@ const NewAppealApp = {
         </div>
         
         <div class="mb-3">
-          <label for="priorityProject" class="form-label">Категории</label>
-          <select id="priorityProject" class="form-select">
+          <label for="appealPriority" class="form-label">Категории</label>
+          <select id="appealPriority" class="form-select">
             <option v-for="priority in priorities"
             :key="priority.id"
             >{{ priority.name }}</option>
@@ -62,7 +53,7 @@ const NewAppealApp = {
         </div>
         
         <div class="mb-3">
-          <label for="appealDescription" class="form-label">Содержание</label>
+          <label for="appealDescription" class="form-label">Описание обращения</label>
           <textarea class="form-control" id="appealDescription" rows="3"></textarea>
         </div>
     `,
