@@ -131,7 +131,7 @@ const NewAppealApp = {
             error: false,
             submitted: false,
             formData: {
-                action: 'create_new_appeal',
+                method: 'create_new_appeal',
                 topic: '',
                 project_id: null,
                 organization_id: null,
