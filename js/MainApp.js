@@ -32,7 +32,8 @@ const MainApp = {
             if (Object.values(tgData).every(arr => Array.isArray(arr))) {
                 console.log('Это данные (JSON):', tgData);
                 this.data = tgData;
-                window.tg_data = tgData
+                console.log('Это данные организации', tgData.organization)
+                window.tgData = tgData
             } else {
                 throw new Error('Некорректные данные');
             }
