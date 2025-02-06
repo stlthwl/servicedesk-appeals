@@ -1,9 +1,18 @@
 const { createApp } = Vue;
 
-const MainApp = {
+const NewAppealApp = {
     template: `
         <div>
             <h1 v-if="error">{{ message }}</h1>
+        </div>
+        
+        <div class="mb-3">
+          <label for="appealTopic" class="form-label">Тема</label>
+          <input type="text" class="form-control" id="appealTopic" placeholder="Тема">
+        </div>
+        <div class="mb-3">
+          <label for="appealDescription" class="form-label">Содержание</label>
+          <textarea class="form-control" id="appealDescription" rows="3"></textarea>
         </div>
     `,
     data() {
@@ -16,12 +25,15 @@ const MainApp = {
         }
     },
     mounted() {
-        const urlParams = new URLSearchParams(window.location.search);
-
-        this.telegramId = urlParams.get('telegram_id') || '';
-        this.app = urlParams.get('app') || '';
-
         try {
+            const urlParams = new URLSearchParams(window.location.search);
+
+            this.telegramId = urlParams.get('telegram_id') || '';
+            this.app = urlParams.get('app') || '';
+
+            console.log('telegramId', this.telegramId)
+            console.log('app', this.app)
+
             const tgData = {
                 organization: JSON.parse(urlParams.get('organization') || '[]'),
                 projects: JSON.parse(urlParams.get('projects') || '[]'),
@@ -48,4 +60,4 @@ const MainApp = {
     }
 };
 
-createApp(MainApp).mount('#main_app');
+createApp(NewAppealApp).mount('#new_appeal_app');
